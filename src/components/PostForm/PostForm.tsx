@@ -2,8 +2,25 @@ import React, { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 import { lightTheme } from '../../theme';
+
+const schema = yup.object().shape({
+  title: yup.string().required(),
+  description: yup
+    .string()
+    .required()
+    .min(4, 'Must be longer')
+    .max(255, 'Must be shorten'),
+  content: yup
+    .string()
+    .required()
+    .min(50, 'Must be longer')
+    .max(600, 'Must be shorten'),
+  url: yup.string().url().required(),
+});
 
 export type FormData = {
   title: string;
@@ -28,6 +45,7 @@ const PostForm = ({ onSubmit }: Props) => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
+    resolver: yupResolver(schema),
     defaultValues: {
       title: '',
       description: '',
