@@ -5,8 +5,9 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 import { AppStackProps } from '../../types';
-import { useGetPost } from '../../api/posts';
+import { useDeletePost, useGetPost } from '../../api/posts';
 import { screenNames } from '../../navigation/screenNames';
+import { lightTheme } from '../../theme';
 
 type Props = NativeStackScreenProps<AppStackProps, 'PostPreview'>;
 
@@ -15,6 +16,17 @@ const PostPreview = ({ route }: Props) => {
 
   const { navigate } = useNavigation();
   const { data, isLoading, refetch } = useGetPost({ postId: params.postId });
+  const post = data?.post;
+
+  const { mutate: deletePost } = useDeletePost({
+    onSuccess: () => {
+      navigate(screenNames.Posts);
+    },
+  });
+
+  const onPressDelete = useCallback(() => {
+    deletePost(params.postId);
+  }, [deletePost, params.postId]);
 
   useFocusEffect(
     useCallback(() => {
@@ -25,7 +37,6 @@ const PostPreview = ({ route }: Props) => {
   if (isLoading) {
     return <ActivityIndicator size="large" />;
   }
-  const post = data?.post;
   return (
     <SafeAreaView>
       <View>
@@ -40,12 +51,23 @@ const PostPreview = ({ route }: Props) => {
                   <Paragraph>{post?.content}</Paragraph>
                 </Card.Content>
               </Card>
-              <Button
-                onPress={() =>
-                  navigate(screenNames.EditPost, { post: data.post })
-                }>
-                Edit Post
-              </Button>
+              <View style={style.containerWithButton}>
+                <Button
+                  style={style.button}
+                  mode="contained"
+                  onPress={() =>
+                    navigate(screenNames.EditPost, { post: data.post })
+                  }>
+                  Edit Post
+                </Button>
+                <Button
+                  onPress={onPressDelete}
+                  style={style.button}
+                  mode="contained"
+                  color="red">
+                  Delete Post
+                </Button>
+              </View>
             </View>
           </>
         )}
@@ -61,6 +83,15 @@ const style = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     color: 'red',
+  },
+  containerWithButton: {
+    display: 'flex',
+    flexWrap: 'nowrap',
+    marginTop: lightTheme.spaceUnit * 4,
+  },
+  button: {
+    width: '40%',
+    display: 'flex',
   },
 });
 

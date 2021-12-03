@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   FlatList,
   SafeAreaView,
@@ -39,6 +39,8 @@ const styles = StyleSheet.create({
 });
 
 const Posts = () => {
+  const [reachedEnd, setReachedEnd] = useState(0);
+  const [page, setPage] = useState(1);
   const { navigate } = useNavigation();
   const { data, isLoading, refetch } = useGetPosts();
 
@@ -54,10 +56,13 @@ const Posts = () => {
 
   return (
     <SafeAreaView>
-      <View>
+      <View style={style.container}>
         {!!data && (
           <FlatList
             data={data.posts}
+            onEndReached={({ distanceFromEnd }) => {
+              setReachedEnd(distanceFromEnd);
+            }}
             renderItem={({ item, index }: ListProps) => (
               <Card key={index} style={styles.postCard}>
                 <TouchableOpacity
@@ -84,5 +89,11 @@ const Posts = () => {
     </SafeAreaView>
   );
 };
+
+const style = StyleSheet.create({
+  container: {
+    minHeight: '100%',
+  },
+});
 
 export default Posts;

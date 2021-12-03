@@ -49,8 +49,7 @@ const PostForm = ({
       content: '',
     },
   });
-  console.log(isValid);
-  console.log();
+
   const handleOnSubmit = useCallback(
     (formData: PostFormData) => {
       onSubmit?.(formData);
