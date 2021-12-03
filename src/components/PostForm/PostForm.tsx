@@ -1,68 +1,54 @@
 import React, { useCallback } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { Controller, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 
+import { PostFormData } from '../../types';
 import { lightTheme } from '../../theme';
 
-const schema = yup.object().shape({
-  title: yup.string().required(),
-  description: yup
-    .string()
-    .required()
-    .min(4, 'Must be longer')
-    .max(255, 'Must be shorten'),
-  content: yup
-    .string()
-    .required()
-    .min(50, 'Must be longer')
-    .max(600, 'Must be shorten'),
-  url: yup.string().url().required(),
-});
-
-export type FormData = {
-  title: string;
-  description: string;
-  content: string;
-  image: string;
-};
-
 type Props = {
-  onSubmit?: (formData: FormData) => void;
+  buttonText: string;
+  defaultValues?: PostFormData;
+  onSubmit?: (formData: PostFormData) => void;
 };
 
 const styles = StyleSheet.create({
+  container: {
+    padding: lightTheme.spaceUnit,
+  },
   formRow: {
     paddingVertical: lightTheme.spaceUnit * 0.5,
   },
 });
 
-const PostForm = ({ onSubmit }: Props) => {
+const PostForm = ({
+  buttonText,
+  defaultValues,
+  onSubmit,
+}: Props): JSX.Element => {
   const {
     control,
     handleSubmit,
+    watch,
     formState: { errors },
-  } = useForm<FormData>({
-    resolver: yupResolver(schema),
-    defaultValues: {
+  } = useForm<PostFormData>({
+    defaultValues: defaultValues || {
       title: '',
+      image: '',
       description: '',
       content: '',
-      image: '',
     },
   });
 
-  const handleSubmitForm = useCallback(
-    (formData: FormData) => {
+  const handleOnSubmit = useCallback(
+    (formData: PostFormData) => {
       onSubmit?.(formData);
     },
     [onSubmit],
   );
 
   return (
-    <View>
+    <View style={styles.container}>
       <View style={styles.formRow}>
         <Controller
           control={control}
@@ -82,9 +68,27 @@ const PostForm = ({ onSubmit }: Props) => {
       <View style={styles.formRow}>
         <Controller
           control={control}
+          name="image"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              multiline
+              mode="outlined"
+              label="image"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              error={!!errors.image}
+            />
+          )}
+        />
+      </View>
+      <View style={styles.formRow}>
+        <Controller
+          control={control}
           name="description"
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
+              multiline
               mode="outlined"
               label="description"
               onBlur={onBlur}
@@ -101,6 +105,7 @@ const PostForm = ({ onSubmit }: Props) => {
           name="content"
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
+              multiline
               mode="outlined"
               label="content"
               onBlur={onBlur}
@@ -112,25 +117,11 @@ const PostForm = ({ onSubmit }: Props) => {
         />
       </View>
       <View style={styles.formRow}>
-        <Controller
-          control={control}
-          name="image"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              mode="outlined"
-              label="image"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              error={!!errors.image}
-            />
-          )}
-        />
-      </View>
-
-      <View style={styles.formRow}>
-        <Button mode="contained" onPress={handleSubmit(handleSubmitForm)}>
-          Sign in
+        <Button
+          mode="contained"
+          onPress={handleSubmit(handleOnSubmit)}
+          disabled={Object.values(watch()).includes('')}>
+          {buttonText}
         </Button>
       </View>
     </View>
