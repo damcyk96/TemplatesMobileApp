@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
-import { SafeAreaView, Text, View } from 'react-native';
-import { ActivityIndicator, Button } from 'react-native-paper';
+import { SafeAreaView, View, StyleSheet } from 'react-native';
+import { ActivityIndicator, Card, Paragraph, Button } from 'react-native-paper';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
@@ -25,17 +25,21 @@ const PostPreview = ({ route }: Props) => {
   if (isLoading) {
     return <ActivityIndicator size="large" />;
   }
-
+  const post = data?.post;
   return (
     <SafeAreaView>
       <View>
         {!!data && (
           <>
             <View>
-              <Text>{data.post.title}</Text>
-              <Text>{data.post.description}</Text>
-            </View>
-            <View>
+              <Card style={style.containter}>
+                <Card.Title title={post?.title} style={style.title} />
+                <Card.Cover source={{ uri: `${post?.image}` }} />
+                <Card.Content>
+                  <Paragraph>{post?.description}</Paragraph>
+                  <Paragraph>{post?.content}</Paragraph>
+                </Card.Content>
+              </Card>
               <Button
                 onPress={() =>
                   navigate(screenNames.EditPost, { post: data.post })
@@ -49,5 +53,15 @@ const PostPreview = ({ route }: Props) => {
     </SafeAreaView>
   );
 };
+const style = StyleSheet.create({
+  containter: {
+    display: 'flex',
+  },
+  title: {
+    display: 'flex',
+    justifyContent: 'center',
+    color: 'red',
+  },
+});
 
 export default PostPreview;

@@ -2,6 +2,8 @@ import React, { useCallback } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 import { PostFormData } from '../../types';
 import { lightTheme } from '../../theme';
@@ -21,6 +23,13 @@ const styles = StyleSheet.create({
   },
 });
 
+const schema = yup.object().shape({
+  title: yup.string().required(),
+  description: yup.string().required(),
+  content: yup.string().required(),
+  image: yup.string().required(),
+});
+
 const PostForm = ({
   buttonText,
   defaultValues,
@@ -29,9 +38,10 @@ const PostForm = ({
   const {
     control,
     handleSubmit,
-    watch,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<PostFormData>({
+    mode: 'onChange',
+    resolver: yupResolver(schema),
     defaultValues: defaultValues || {
       title: '',
       image: '',
@@ -39,7 +49,8 @@ const PostForm = ({
       content: '',
     },
   });
-
+  console.log(isValid);
+  console.log();
   const handleOnSubmit = useCallback(
     (formData: PostFormData) => {
       onSubmit?.(formData);
@@ -120,7 +131,7 @@ const PostForm = ({
         <Button
           mode="contained"
           onPress={handleSubmit(handleOnSubmit)}
-          disabled={Object.values(watch()).includes('')}>
+          disabled={!isValid}>
           {buttonText}
         </Button>
       </View>
