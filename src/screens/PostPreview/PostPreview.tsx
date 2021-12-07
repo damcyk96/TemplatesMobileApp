@@ -86,11 +86,11 @@ const style = StyleSheet.create({
   },
   containerWithButton: {
     display: 'flex',
-    flexWrap: 'nowrap',
+    flexDirection: 'row',
     marginTop: lightTheme.spaceUnit * 4,
   },
   button: {
-    width: '40%',
+    width: '50%',
     display: 'flex',
   },
 });

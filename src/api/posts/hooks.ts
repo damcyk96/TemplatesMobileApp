@@ -5,6 +5,7 @@ import {
   editPost,
   fetchPost,
   fetchPosts,
+  fetchPostsWithLimit,
   deletePost,
 } from './requests';
 import { getPost, getPosts } from './selectors';
@@ -23,13 +24,18 @@ export const useGetPosts = ({
 export const useGetPostWithLimits = ({
   page = 1,
   limit = 3,
+  keepPreviousData = true,
   selectors = { post: getPosts },
   ...options
 } = {}) => {
-  const queryKey: PostsWithLimitQueryKey = ['postsWithLimit', { page, limit }];
+  const queryKey: PostsWithLimitQueryKey = [
+    'postsWithLimit',
+    { page, limit, keepPreviousData },
+  ];
 
-  return useQuery(queryKey, fetchPosts, {
+  return useQuery(queryKey, fetchPostsWithLimit, {
     select: handleSelectors(selectors),
+    keepPreviousData,
     ...options,
   });
 };

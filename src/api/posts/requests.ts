@@ -23,4 +23,4 @@ export const deletePost = (postId: number) => client.delete(`/posts/${postId}`);
 export const fetchPostsWithLimit = ({
   queryKey: [, param],
 }: FetchPostsWithLimit): Promise<Post> =>
-  client.get(`/posts/${param.page}/${param.limit}`);
+  client.get(`/posts?_page=${param.page}&_limit=${param.limit}`);

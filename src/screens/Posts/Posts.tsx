@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import {
   FlatList,
   SafeAreaView,
@@ -15,7 +15,7 @@ import {
   Paragraph,
 } from 'react-native-paper';
 
-import { useGetPosts } from '../../api/posts';
+import { useGetPostWithLimits } from '../../api/posts';
 import { screenNames } from '../../navigation/screenNames';
 import { lightTheme } from '../../theme';
 import { Post } from '../../types';
@@ -39,29 +39,33 @@ const styles = StyleSheet.create({
 });
 
 const Posts = () => {
-  const [reachedEnd, setReachedEnd] = useState(0);
   const [page, setPage] = useState(1);
+  const [posts, setPosts] = useState([]);
   const { navigate } = useNavigation();
-  const { data, isLoading, refetch } = useGetPosts();
+  const { data, isLoading, refetch } = useGetPostWithLimits({
+    page: page,
+    keepPreviousData: true,
+  });
 
   useFocusEffect(
     useCallback(() => {
       refetch();
     }, [refetch]),
   );
-
   if (isLoading) {
     return <ActivityIndicator size="large" />;
   }
-
   return (
     <SafeAreaView>
       <View style={style.container}>
         {!!data && (
           <FlatList
-            data={data.posts}
-            onEndReached={({ distanceFromEnd }) => {
-              setReachedEnd(distanceFromEnd);
+            data={data.post}
+            onEndReached={() => {
+              if (posts) {
+                setPage((prevValue) => prevValue + 1);
+                refetch();
+              }
             }}
             renderItem={({ item, index }: ListProps) => (
               <Card key={index} style={styles.postCard}>
