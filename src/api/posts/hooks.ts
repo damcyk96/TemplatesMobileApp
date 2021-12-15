@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from 'react-query';
+import { useQuery, useMutation, useInfiniteQuery } from 'react-query';
 
 import {
   createPost,
@@ -10,7 +10,7 @@ import {
 } from './requests';
 import { getPost, getPosts } from './selectors';
 import { handleSelectors } from '../shared';
-import { PostQueryKey, PostsWithLimitQueryKey } from '../../types';
+import { PostQueryKey } from '../../types';
 
 export const useGetPosts = ({
   selectors = { posts: getPosts },
@@ -21,24 +21,13 @@ export const useGetPosts = ({
     ...options,
   });
 
-export const useGetPostWithLimits = ({
-  page = 1,
-  limit = 3,
-  keepPreviousData = true,
-  selectors = { post: getPosts },
-  ...options
-} = {}) => {
-  const queryKey: PostsWithLimitQueryKey = [
-    'postsWithLimit',
-    { page, limit, keepPreviousData },
-  ];
-
-  return useQuery(queryKey, fetchPostsWithLimit, {
-    select: handleSelectors(selectors),
-    keepPreviousData,
+export const useGetPostsWithLimit = ({ ...options } = {}) =>
+  useInfiniteQuery('postsWithLimit', fetchPostsWithLimit, {
+    getNextPageParam: (lastPage, pages) =>
+      lastPage.data.length < 3 ? undefined : pages.length + 1,
     ...options,
   });
-};
+
 export const useGetPost = ({
   postId = 0,
   selectors = { post: getPost },

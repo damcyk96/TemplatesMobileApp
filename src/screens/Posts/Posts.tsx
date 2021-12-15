@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
   FlatList,
   SafeAreaView,
@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import {
   ActivityIndicator,
   Card,
@@ -15,7 +15,7 @@ import {
   Paragraph,
 } from 'react-native-paper';
 
-import { useGetPostWithLimits } from '../../api/posts';
+import { useGetPostsWithLimit } from '../../api/posts';
 import { screenNames } from '../../navigation/screenNames';
 import { lightTheme } from '../../theme';
 import { Post } from '../../types';
@@ -39,34 +39,35 @@ const styles = StyleSheet.create({
 });
 
 const Posts = () => {
-  const [page, setPage] = useState(1);
-  const [posts, setPosts] = useState([]);
   const { navigate } = useNavigation();
-  const { data, isLoading, refetch } = useGetPostWithLimits({
-    page: page,
-    keepPreviousData: true,
-  });
+  const { data, hasNextPage, isLoading, isFetchingNextPage, fetchNextPage } =
+    useGetPostsWithLimit();
 
-  useFocusEffect(
-    useCallback(() => {
-      refetch();
-    }, [refetch]),
+  const posts = useMemo(
+    () => data?.pages.flatMap((response) => response.data),
+    [data],
   );
+
+  const handleOnEndReached = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
   if (isLoading) {
     return <ActivityIndicator size="large" />;
   }
+
   return (
     <SafeAreaView>
       <View style={style.container}>
         {!!data && (
           <FlatList
-            data={data.post}
-            onEndReached={() => {
-              if (posts) {
-                setPage((prevValue) => prevValue + 1);
-                refetch();
-              }
-            }}
+            data={posts}
+            ListFooterComponent={() => (
+              <>{isFetchingNextPage && <ActivityIndicator size="large" />}</>
+            )}
+            onEndReached={handleOnEndReached}
             renderItem={({ item, index }: ListProps) => (
               <Card key={index} style={styles.postCard}>
                 <TouchableOpacity
@@ -99,5 +100,4 @@ const style = StyleSheet.create({
     minHeight: '100%',
   },
 });
-
 export default Posts;

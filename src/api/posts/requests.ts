@@ -21,6 +21,6 @@ export const editPost = (data: Post) => client.put(`/posts/${data.id}`, data);
 export const deletePost = (postId: number) => client.delete(`/posts/${postId}`);
 
 export const fetchPostsWithLimit = ({
-  queryKey: [, param],
-}: FetchPostsWithLimit): Promise<Post> =>
-  client.get(`/posts?_page=${param.page}&_limit=${param.limit}`);
+  pageParam = 1,
+}): Promise<{ data: Post[] }> =>
+  client.get(`/posts?_page=${pageParam}&_limit=3`);
