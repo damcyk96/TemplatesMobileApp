@@ -7,4 +7,5 @@ export const screenNames = {
   SignIn: 'SignIn',
   CreatePost: 'CreatePost',
   EditPost: 'EditPost',
+  PostsList: 'PostsList',
 };
