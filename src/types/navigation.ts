@@ -7,3 +7,11 @@ export type AppStackProps = {
   CreatePost: undefined;
   EditPost: { post: Post };
 };
+
+export type PaymentStackProps = {
+  MainDrawer: undefined;
+  PaymentMethod: undefined;
+  Preview: undefined;
+  ProductsList: undefined;
+  Summary: undefined;
+};

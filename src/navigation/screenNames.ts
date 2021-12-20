@@ -8,4 +8,8 @@ export const screenNames = {
   CreatePost: 'CreatePost',
   EditPost: 'EditPost',
   PostsList: 'PostsList',
+  PaymentMethod: 'PaymentMethod',
+  Preview: 'Preview',
+  ProductsList: 'ProductsList',
+  Summary: 'Summary',
 };
