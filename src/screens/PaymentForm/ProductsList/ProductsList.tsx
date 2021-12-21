@@ -7,34 +7,11 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
 import { SharedElement } from 'react-navigation-shared-element';
+import { useGetTrips } from '../../../api/trips';
 import PrevAndNextButton from '../../../components/PrevAndNextButton';
 import { screenNames } from '../../../navigation/screenNames';
-
-const data = [
-  {
-    id: '1',
-    title: 'Krakow, Polska',
-    description: 'Stare miasto lorem ipsum',
-    image_url:
-      'https://www.polska.travel/images/pl-PL/glowne-miasta/krakow/krakow_rynek_2_1170.jpg',
-  },
-
-  {
-    id: '2',
-    title: 'Warszawa, Polska',
-    description: 'Stolica Polski',
-    image_url:
-      'https://www.euractiv.pl/wp-content/uploads/sites/6/2019/07/kamil-gliwinski-xcPw1-5OHTk-unsplash-800x450.jpg',
-  },
-  {
-    id: '3',
-    title: 'Praga, Czechy',
-    description: 'Jakis obrazek Pragi',
-    image_url:
-      'https://images.unsplash.com/photo-1513805959324-96eb66ca8713?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
-  },
-];
 
 const { width } = Dimensions.get('screen');
 
@@ -42,14 +19,20 @@ const ITEM_WIDTH = width * 0.9;
 const ITEM_HEIGHT = ITEM_WIDTH * 0.9;
 
 const ProductsList = ({ navigation }) => {
+  const { data, isLoading } = useGetTrips();
+  console.log(data);
+
+  if (isLoading) {
+    return <ActivityIndicator size="large" />;
+  }
+
   return (
     <View style={{ flex: 1 }}>
-      {/* Scrollable content */}
       <View style={{ flex: 1, paddingBottom: 20 }}>
         <ScrollView
           indicatorStyle="white"
           contentContainerStyle={{ alignItems: 'center' }}>
-          {data.map((item) => (
+          {data?.trips.map((item) => (
             <View key={item.id}>
               <TouchableOpacity
                 activeOpacity={0.8}
@@ -64,15 +47,17 @@ const ProductsList = ({ navigation }) => {
                       width: ITEM_WIDTH,
                       height: ITEM_HEIGHT,
                     }}
-                    source={{ uri: item.image_url }}
+                    source={{ uri: item.images[0] }}
                     resizeMode="cover"
                   />
                 </SharedElement>
                 <View
                   style={{
                     position: 'absolute',
-                    bottom: 20,
-                    left: 10,
+                    bottom: 0,
+                    padding: 10,
+                    borderTopRightRadius: 50,
+                    backgroundColor: 'red',
                   }}>
                   <View style={{ flexDirection: 'row' }}>
                     <View style={{ flexDirection: 'column', paddingLeft: 6 }}>
@@ -87,7 +72,7 @@ const ProductsList = ({ navigation }) => {
                           {item.title}
                         </Text>
                       </SharedElement>
-                      <SharedElement id={`item.${item.id}.description`}>
+                      <SharedElement id={`item.${item.id}.subtitle`}>
                         <Text
                           style={{
                             color: 'white',
@@ -95,7 +80,7 @@ const ProductsList = ({ navigation }) => {
                             fontWeight: 'bold',
                             lineHeight: 18,
                           }}>
-                          {item.description}
+                          {item.subtitle}
                         </Text>
                       </SharedElement>
                     </View>
@@ -105,6 +90,8 @@ const ProductsList = ({ navigation }) => {
             </View>
           ))}
         </ScrollView>
+      </View>
+      <View style={{ marginBottom: 30 }}>
         <PrevAndNextButton navigateNext={screenNames.PaymentMethod} first />
       </View>
     </View>

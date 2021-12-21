@@ -7,7 +7,7 @@ export const useGetPaymentMethods = ({
   selectors = { paymentMetods: getPaymentMethods },
   ...options
 } = {}) =>
-  useQuery('paymentMethods', fetchPaymentMethods, {
+  useQuery('payment', fetchPaymentMethods, {
     select: handleSelectors(selectors),
     ...options,
   });
