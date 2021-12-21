@@ -1,4 +1,4 @@
-import { Trips } from '../../types';
+import { Trip } from '../../types';
 
-export const getTripsMethod = (data: any): Trips[] => data.data;
-export const getTripMethod = (data: any): Trips => data.data;
+export const getTrips = (data: any): Trip[] => data.data;
+export const getTrip = (data: any): Trip => data.data;

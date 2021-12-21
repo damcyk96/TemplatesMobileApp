@@ -6,12 +6,5 @@ export type AppStackProps = {
   SignIn: undefined;
   CreatePost: undefined;
   EditPost: { post: Post };
-};
-
-export type PaymentStackProps = {
-  MainDrawer: undefined;
-  PaymentMethod: undefined;
-  Preview: undefined;
-  ProductsList: undefined;
-  Summary: undefined;
+  ProductDetail: { tripId: number };
 };

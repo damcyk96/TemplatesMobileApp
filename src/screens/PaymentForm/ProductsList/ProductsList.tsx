@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {
   ScrollView,
@@ -18,7 +19,9 @@ const { width } = Dimensions.get('screen');
 const ITEM_WIDTH = width * 0.9;
 const ITEM_HEIGHT = ITEM_WIDTH * 0.9;
 
-const ProductsList = ({ navigation }) => {
+const ProductsList = () => {
+  const { navigate } = useNavigation();
+
   const { data, isLoading } = useGetTrips();
   console.log(data);
 
@@ -38,7 +41,7 @@ const ProductsList = ({ navigation }) => {
                 activeOpacity={0.8}
                 style={{ marginBottom: 14 }}
                 onPress={() =>
-                  navigation.navigate(screenNames.ProductItem, { item })
+                  navigate(screenNames.ProductItem, { tripId: item.id })
                 }>
                 <SharedElement id={`item.${item.id}.image_url`}>
                   <Image

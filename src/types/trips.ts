@@ -1,4 +1,4 @@
-export type Trips = {
+export type Trip = {
   id: number;
   title: string;
   subtitle: string;
@@ -6,3 +6,5 @@ export type Trips = {
   images: string[];
   description: string[];
 };
+
+export type TripQueryKey = ['trip', { tripId: number | null }];
