@@ -5,6 +5,7 @@ export type Trip = {
   price: number;
   images: string[];
   description: string[];
+  color: string;
 };
 
 export type TripQueryKey = ['trip', { tripId: number | null }];

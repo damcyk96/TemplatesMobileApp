@@ -84,7 +84,7 @@ const ProductItem = ({ route }: Props) => {
       <BottomSheet
         snapPoints={[height - ITEM_HEIGHT, height]}
         index={0}
-        style={{ padding: 20 }}>
+        style={{ padding: 30 }}>
         <BottomSheetScrollView style={{ backgroundColor: 'white' }}>
           <Text>{data?.trip.title}</Text>
           <Text>{data?.trip.price}</Text>

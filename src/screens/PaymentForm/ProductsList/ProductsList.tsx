@@ -51,7 +51,7 @@ const ProductsList = () => {
                       height: ITEM_HEIGHT,
                     }}
                     source={{ uri: item.images[0] }}
-                    resizeMode="cover"
+                    resizeMode="stretch"
                   />
                 </SharedElement>
                 <View
@@ -60,7 +60,7 @@ const ProductsList = () => {
                     bottom: 0,
                     padding: 10,
                     borderTopRightRadius: 50,
-                    backgroundColor: 'red',
+                    backgroundColor: item.color,
                   }}>
                   <View style={{ flexDirection: 'row' }}>
                     <View style={{ flexDirection: 'column', paddingLeft: 6 }}>
