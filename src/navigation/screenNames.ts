@@ -11,5 +11,6 @@ export const screenNames = {
   PaymentMethod: 'PaymentMethod',
   Preview: 'Preview',
   ProductsList: 'ProductsList',
+  ProductItem: 'ProductItem',
   Summary: 'Summary',
 };

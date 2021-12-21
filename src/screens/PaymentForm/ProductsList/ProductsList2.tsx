@@ -7,32 +7,34 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
+import { SimpleLineIcons } from 'react-native-vector-icons';
 import { SharedElement } from 'react-navigation-shared-element';
-import PrevAndNextButton from '../../../components/PrevAndNextButton';
-import { screenNames } from '../../../navigation/screenNames';
 
 const data = [
   {
     id: '1',
-    title: 'Krakow, Polska',
-    description: 'Stare miasto lorem ipsum',
+    title: 'Manarola, Italy',
+    description: 'The Cliffs of Cinque Terre',
     image_url:
-      'https://www.polska.travel/images/pl-PL/glowne-miasta/krakow/krakow_rynek_2_1170.jpg',
+      'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=633&q=80',
+    iconName: 'location-pin',
   },
 
   {
     id: '2',
-    title: 'Warszawa, Polska',
-    description: 'Stolica Polski',
+    title: 'Venezia, Italy',
+    description: 'Rialto Bridge, Venezia, Italy',
     image_url:
-      'https://www.euractiv.pl/wp-content/uploads/sites/6/2019/07/kamil-gliwinski-xcPw1-5OHTk-unsplash-800x450.jpg',
+      'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=630&q=80',
+    iconName: 'location-pin',
   },
   {
     id: '3',
-    title: 'Praga, Czechy',
-    description: 'Jakis obrazek Pragi',
+    title: 'Prague, Czechia',
+    description: 'Tram in Prague',
     image_url:
       'https://images.unsplash.com/photo-1513805959324-96eb66ca8713?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
+    iconName: 'location-pin',
   },
 ];
 
@@ -41,9 +43,17 @@ const { width } = Dimensions.get('screen');
 const ITEM_WIDTH = width * 0.9;
 const ITEM_HEIGHT = ITEM_WIDTH * 0.9;
 
-const ProductsList = ({ navigation }) => {
+export default function ProductsList({ navigation }) {
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: '#0f0f0f' }}>
+      <View style={{ marginTop: 50, marginBottom: 20, paddingHorizontal: 20 }}>
+        <Text style={{ color: '#888', textTransform: 'uppercase' }}>
+          Saturday 9 January
+        </Text>
+        <Text style={{ color: '#fff', fontSize: 32, fontWeight: '600' }}>
+          Today
+        </Text>
+      </View>
       {/* Scrollable content */}
       <View style={{ flex: 1, paddingBottom: 20 }}>
         <ScrollView
@@ -54,9 +64,7 @@ const ProductsList = ({ navigation }) => {
               <TouchableOpacity
                 activeOpacity={0.8}
                 style={{ marginBottom: 14 }}
-                onPress={() =>
-                  navigation.navigate(screenNames.ProductItem, { item })
-                }>
+                onPress={() => navigation.navigate('DetailScreen', { item })}>
                 <SharedElement id={`item.${item.id}.image_url`}>
                   <Image
                     style={{
@@ -75,6 +83,13 @@ const ProductsList = ({ navigation }) => {
                     left: 10,
                   }}>
                   <View style={{ flexDirection: 'row' }}>
+                    <SharedElement id={`item.${item.id}.iconName`}>
+                      <SimpleLineIcons
+                        size={40}
+                        color="white"
+                        name={item.iconName}
+                      />
+                    </SharedElement>
                     <View style={{ flexDirection: 'column', paddingLeft: 6 }}>
                       <SharedElement id={`item.${item.id}.title`}>
                         <Text
@@ -105,10 +120,7 @@ const ProductsList = ({ navigation }) => {
             </View>
           ))}
         </ScrollView>
-        <PrevAndNextButton navigateNext={screenNames.PaymentMethod} first />
       </View>
     </View>
   );
-};
-
-export default ProductsList;
+}

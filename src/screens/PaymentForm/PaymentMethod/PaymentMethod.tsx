@@ -27,8 +27,6 @@ const PaymentMethod: FC = () => {
       scrollX.value = event.contentOffset.x;
     },
   });
-  console.log(data?.paymentMetods);
-
   if (isLoading) {
     return <ActivityIndicator size="large" />;
   }
@@ -75,9 +73,6 @@ const Item = ({
   const CARD_WIDTH = width;
   const CARD_HEIGHT = FLATLIST_HEIGHT;
   const inputRange = [(index - 1) * width, index * width, (index + 1) * width];
-
-  console.log(item.title);
-
   const animatedContainerStyle = useAnimatedStyle(() => {
     return {
       transform: [

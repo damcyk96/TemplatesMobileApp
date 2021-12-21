@@ -10,8 +10,19 @@ import {
   ProductsList,
   Summary,
 } from '../../screens/PaymentForm';
+import ProductItem from '../../screens/PaymentForm/ProductsList/ProductItem';
 
 const Stack = createNativeStackNavigator();
+const options = {
+  headerBackTitleVisible: false,
+  cardStyleInterpolator: ({ current: { progress } }) => {
+    return {
+      cardStyle: {
+        opacity: progress,
+      },
+    };
+  },
+};
 
 const AppStack = () => (
   <Stack.Navigator initialRouteName="MainDrawer">
@@ -29,6 +40,11 @@ const AppStack = () => (
     <Stack.Screen name={screenNames.PaymentMethod} component={PaymentMethod} />
     <Stack.Screen name={screenNames.Preview} component={Preview} />
     <Stack.Screen name={screenNames.ProductsList} component={ProductsList} />
+    <Stack.Screen
+      name={screenNames.ProductItem}
+      component={ProductItem}
+      options={() => options}
+    />
     <Stack.Screen name={screenNames.Summary} component={Summary} />
   </Stack.Navigator>
 );

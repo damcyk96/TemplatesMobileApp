@@ -8,6 +8,8 @@ type Props = {
   first?: boolean | undefined;
   navigateNext?: any;
   navigatePrev?: any;
+  disabledNext?: boolean | undefined;
+  disabledPrev?: boolean | undefined;
 };
 
 const PrevAndNextButton = ({
@@ -15,6 +17,8 @@ const PrevAndNextButton = ({
   first,
   navigateNext,
   navigatePrev,
+  disabledNext,
+  disabledPrev,
 }: Props) => {
   const { navigate } = useNavigation();
 
@@ -51,6 +55,7 @@ const PrevAndNextButton = ({
         mode="contained"
         color="red"
         style={style.button}
+        disabled={disabledPrev}
         onPress={() => navigate(navigatePrev)}>
         Previous step
       </Button>
@@ -58,6 +63,7 @@ const PrevAndNextButton = ({
         mode="contained"
         color="green"
         style={style.button}
+        disabled={disabledPrev}
         onPress={() => navigate(navigateNext)}>
         Next step
       </Button>
