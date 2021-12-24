@@ -13,6 +13,7 @@ import {
 import { ActivityIndicator } from 'react-native-paper';
 import { useGetTrip } from '../../../../api/trips';
 import { AppStackProps } from '../../../../types';
+import DateField from './DateField';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -86,16 +87,32 @@ const ProductItem = ({ route }: Props) => {
         index={0}
         style={{ padding: 30 }}>
         <BottomSheetScrollView style={{ backgroundColor: 'white' }}>
-          <Text>{data?.trip.title}</Text>
-          <Text>{data?.trip.price}</Text>
+          <View style={{ width: '100%', alignItems: 'center' }}>
+            <Text style={{ marginTop: 20, fontSize: 25, fontWeight: 'bold' }}>
+              {data?.trip.title}
+            </Text>
+            <Text style={{ marginTop: 20, fontSize: 20, fontWeight: 'bold' }}>
+              {data?.trip.price}
+            </Text>
+          </View>
           <View>
             {data?.trip.description.map((text, index) => {
               return (
-                <Text key={index} style={{ marginVertical: 30 }}>
+                <Text
+                  key={index}
+                  style={{
+                    marginVertical: 30,
+                    fontSize: 15,
+                    fontWeight: '500',
+                    lineHeight: 20,
+                  }}>
                   {text}
                 </Text>
               );
             })}
+          </View>
+          <View>
+            <DateField />
           </View>
         </BottomSheetScrollView>
       </BottomSheet>

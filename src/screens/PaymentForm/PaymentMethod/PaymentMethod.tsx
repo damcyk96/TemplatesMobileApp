@@ -37,6 +37,7 @@ const PaymentMethod: FC = () => {
         style={{
           justifyContent: 'flex-start',
           alignItems: 'flex-start',
+          flex: 1,
         }}>
         <AnimatedFlatlist
           alwaysBounceVertical={false}
@@ -54,10 +55,12 @@ const PaymentMethod: FC = () => {
           renderItem={(item) => <Item wholeItem={item} scrollX={scrollX} />}
         />
       </View>
-      <PrevAndNextButton
-        navigatePrev={screenNames.ProductsList}
-        navigateNext={screenNames.Preview}
-      />
+      <View style={{ marginVertical: 30 }}>
+        <PrevAndNextButton
+          navigatePrev={screenNames.ProductsList}
+          navigateNext={screenNames.Preview}
+        />
+      </View>
     </>
   );
 };
@@ -77,10 +80,10 @@ const Item = ({
     return {
       transform: [
         {
-          scale: interpolate(scrollX.value, inputRange, [0.7, 0.85, 0.7]),
+          scale: interpolate(scrollX.value, inputRange, [0.6, 0.75, 0.6]),
         },
         {
-          translateX: interpolate(scrollX.value, inputRange, [-100, 0, 100]),
+          translateX: interpolate(scrollX.value, inputRange, [-200, 0, 200]),
         },
       ],
     };
