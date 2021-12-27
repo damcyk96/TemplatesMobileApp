@@ -6,6 +6,16 @@ export type Post = {
   content: string;
 };
 
+export type PostWithCommentsFormData = {
+  title: string;
+  image: string;
+  description: string;
+  content: string;
+  comments: {
+    content: string;
+  }[];
+};
+
 export type PostFormData = Omit<Post, 'id'>;
 
 export type PostQueryKey = ['post', { postId: number | null }];

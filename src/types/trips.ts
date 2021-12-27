@@ -8,4 +8,13 @@ export type Trip = {
   color: string;
 };
 
+export type TripFormData = {
+  title: string;
+  price: number;
+  dates: {
+    day: number;
+    people: number;
+  }[];
+};
+
 export type TripQueryKey = ['trip', { tripId: number | null }];

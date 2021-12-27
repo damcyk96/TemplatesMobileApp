@@ -6,6 +6,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { lightTheme } from './theme';
 import AppStack from './navigation/AppStack';
+import { LastPostWrapper } from './contexts/LastPostContext';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,13 +18,15 @@ const queryClient = new QueryClient({
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider theme={lightTheme}>
-      <SafeAreaProvider>
-        <NavigationContainer>
-          <AppStack />
-        </NavigationContainer>
-      </SafeAreaProvider>
-    </ThemeProvider>
+    <LastPostWrapper>
+      <ThemeProvider theme={lightTheme}>
+        <SafeAreaProvider>
+          <NavigationContainer>
+            <AppStack />
+          </NavigationContainer>
+        </SafeAreaProvider>
+      </ThemeProvider>
+    </LastPostWrapper>
   </QueryClientProvider>
 );
 

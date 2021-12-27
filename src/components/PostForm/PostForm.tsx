@@ -5,13 +5,14 @@ import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { PostFormData } from '../../types';
+import { PostWithCommentsFormData } from '../../types';
 import { lightTheme } from '../../theme';
+import CommentFields from './CommentFields';
 
 type Props = {
   buttonText: string;
-  defaultValues?: PostFormData;
-  onSubmit?: (formData: PostFormData) => void;
+  defaultValues?: PostWithCommentsFormData;
+  onSubmit?: (formData: PostWithCommentsFormData) => void;
 };
 
 const styles = StyleSheet.create({
@@ -39,7 +40,7 @@ const PostForm = ({
     control,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<PostFormData>({
+  } = useForm<PostWithCommentsFormData>({
     mode: 'onChange',
     resolver: yupResolver(schema),
     defaultValues: defaultValues || {
@@ -51,7 +52,7 @@ const PostForm = ({
   });
 
   const handleOnSubmit = useCallback(
-    (formData: PostFormData) => {
+    (formData: PostWithCommentsFormData) => {
       onSubmit?.(formData);
     },
     [onSubmit],
@@ -125,6 +126,9 @@ const PostForm = ({
             />
           )}
         />
+      </View>
+      <View>
+        <CommentFields control={control} />
       </View>
       <View style={styles.formRow}>
         <Button
