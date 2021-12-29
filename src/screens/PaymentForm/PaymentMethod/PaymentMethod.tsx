@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback, useContext } from 'react';
 import { Dimensions, FlatList, View } from 'react-native';
 import { ActivityIndicator, Button } from 'react-native-paper';
 import Animated, {
@@ -11,8 +11,9 @@ import Animated, {
 import { SharedElement } from 'react-navigation-shared-element';
 import { useGetPaymentMethods } from '../../../api/paymentMethods';
 import PrevAndNextButton from '../../../components/PrevAndNextButton';
+import TripOrderContext from '../../../contexts/TripsContext';
 import { screenNames } from '../../../navigation/screenNames';
-
+import { useNavigation } from '@react-navigation/native';
 const AnimatedFlatlist = Animated.createAnimatedComponent(FlatList);
 
 const { width, height } = Dimensions.get('screen');
@@ -69,10 +70,19 @@ const Item = ({
   wholeItem: { item: any; index: number };
   scrollX: SharedValue<number>;
 }) => {
+  const { navigate } = useNavigation();
   const { index, item } = wholeItem;
   const CARD_WIDTH = width;
   const CARD_HEIGHT = FLATLIST_HEIGHT;
   const inputRange = [(index - 1) * width, index * width, (index + 1) * width];
+  const { dispatchTripOrderContextActions } = useContext<any>(TripOrderContext);
+  const handleSubmit = useCallback(() => {
+    dispatchTripOrderContextActions({
+      type: 'setPaymentMethod',
+      payload: item.title,
+    });
+    navigate(screenNames.Preview);
+  }, [dispatchTripOrderContextActions, item.title, navigate]);
   const animatedContainerStyle = useAnimatedStyle(() => {
     return {
       transform: [
@@ -100,7 +110,10 @@ const Item = ({
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <Button mode="contained" style={{ width: '50%' }}>
+        <Button
+          mode="contained"
+          style={{ width: '50%' }}
+          onPress={handleSubmit}>
           {item.title}
         </Button>
       </Animated.View>
@@ -109,3 +122,6 @@ const Item = ({
 };
 
 export default PaymentMethod;
+function dispatchTripOrderContextActions(arg0: { type: string; payload: any }) {
+  throw new Error('Function not implemented.');
+}

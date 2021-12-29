@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import { screenNames } from '../../../../navigation/screenNames';
 
 const DateField = ({ title, price }) => {
+  const [visibleButton, setVisibleButton] = useState(false);
   const { navigate } = useNavigation();
   const { control, handleSubmit } = useForm<TripFormData>({
     mode: 'onChange',
@@ -28,10 +29,7 @@ const DateField = ({ title, price }) => {
     control,
   });
 
-  const {
-    stateData: { order },
-    dispatchTripOrderContextActions,
-  } = useContext<any>(TripOrderContext);
+  const { dispatchTripOrderContextActions } = useContext<any>(TripOrderContext);
   const handleOnSubmit = useCallback(
     (formData: TripFormData) => {
       dispatchTripOrderContextActions({ type: 'setOrder', payload: formData });
@@ -39,6 +37,15 @@ const DateField = ({ title, price }) => {
     },
     [dispatchTripOrderContextActions, navigate],
   );
+
+  useEffect(() => {
+    if (fields.length) {
+      setVisibleButton(true);
+    } else {
+      setVisibleButton(false);
+    }
+  }, [fields]);
+
   return (
     <View>
       <View>
@@ -88,7 +95,11 @@ const DateField = ({ title, price }) => {
         ))}
         <Button
           mode="contained"
-          style={{ marginBottom: 50 }}
+          style={
+            visibleButton
+              ? { display: 'flex', marginBottom: 50 }
+              : { display: 'none' }
+          }
           onPress={handleSubmit(handleOnSubmit)}>
           Choose payment method
         </Button>
