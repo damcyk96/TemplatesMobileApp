@@ -2,15 +2,13 @@ import React, { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { Controller, useForm } from 'react-hook-form';
-
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { lightTheme } from '../../theme';
+import { screenNames } from '../../navigation/screenNames';
 
 export type FormData = {
   username: string;
-};
-
-type Props = {
-  onSubmit?: (formData: FormData) => void;
 };
 
 const styles = StyleSheet.create({
@@ -19,7 +17,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const SignInForm = ({ onSubmit }: Props) => {
+const SignInForm = ({}: Props) => {
+  const { navigate } = useNavigation();
   const {
     control,
     handleSubmit,
@@ -29,12 +28,19 @@ const SignInForm = ({ onSubmit }: Props) => {
       username: '',
     },
   });
-
+  const storeData = async (value) => {
+    try {
+      await AsyncStorage.setItem('userName', value);
+    } catch (e) {
+      // saving error
+    }
+  };
   const handleSubmitForm = useCallback(
     (formData: FormData) => {
-      onSubmit?.(formData);
+      storeData(formData.username);
+      navigate(screenNames.Posts);
     },
-    [onSubmit],
+    [navigate],
   );
 
   return (

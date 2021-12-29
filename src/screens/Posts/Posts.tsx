@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState, useEffect } from 'react';
 import {
   FlatList,
   SafeAreaView,
@@ -13,7 +13,9 @@ import {
   FAB,
   Title,
   Paragraph,
+  Text,
 } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useGetPostsWithLimit } from '../../api/posts';
 import { screenNames } from '../../navigation/screenNames';
@@ -39,6 +41,13 @@ const styles = StyleSheet.create({
 });
 
 const Posts = () => {
+  const [userName, setuserName] = useState('');
+
+  useEffect(async () => {
+    const usernameValue = await AsyncStorage.getItem('userName');
+    setuserName(usernameValue);
+  }, []);
+
   const { navigate } = useNavigation();
   const { data, hasNextPage, isLoading, isFetchingNextPage, fetchNextPage } =
     useGetPostsWithLimit();
@@ -61,6 +70,7 @@ const Posts = () => {
   return (
     <SafeAreaView>
       <View style={style.container}>
+        <Text style={{ fontSize: 45 }}>AsyncStorage: {userName}</Text>
         {!!data && (
           <FlatList
             data={posts}

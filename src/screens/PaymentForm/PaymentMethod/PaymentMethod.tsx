@@ -122,6 +122,3 @@ const Item = ({
 };
 
 export default PaymentMethod;
-function dispatchTripOrderContextActions(arg0: { type: string; payload: any }) {
-  throw new Error('Function not implemented.');
-}
