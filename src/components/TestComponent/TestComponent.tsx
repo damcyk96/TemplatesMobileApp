@@ -7,11 +7,8 @@ const TestComponent = () => {
   useEffect(() => {
     axios.get('https://jsonplaceholder.typicode.com/posts').then((response) => {
       setPosts(response.data);
-
-      // console.log(response.data);
     });
   }, []);
-  console.log(posts);
   return (
     <View testID="post-container">
       {/* {posts.map(({ title }, index) => (

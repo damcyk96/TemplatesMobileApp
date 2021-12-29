@@ -56,10 +56,7 @@ const PaymentMethod: FC = () => {
         />
       </View>
       <View style={{ marginVertical: 30 }}>
-        <PrevAndNextButton
-          navigatePrev={screenNames.ProductsList}
-          navigateNext={screenNames.Preview}
-        />
+        <PrevAndNextButton last navigatePrev={screenNames.ProductsList} />
       </View>
     </>
   );
@@ -88,7 +85,6 @@ const Item = ({
       ],
     };
   });
-
   return (
     <SharedElement id={`item.${item.id}.photo`}>
       <Animated.Image

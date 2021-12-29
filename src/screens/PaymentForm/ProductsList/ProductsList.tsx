@@ -11,7 +11,6 @@ import {
 import { ActivityIndicator } from 'react-native-paper';
 import { SharedElement } from 'react-navigation-shared-element';
 import { useGetTrips } from '../../../api/trips';
-import PrevAndNextButton from '../../../components/PrevAndNextButton';
 import { screenNames } from '../../../navigation/screenNames';
 
 const { width } = Dimensions.get('screen');
@@ -23,7 +22,6 @@ const ProductsList = () => {
   const { navigate } = useNavigation();
 
   const { data, isLoading } = useGetTrips();
-  console.log(data);
 
   if (isLoading) {
     return <ActivityIndicator size="large" />;
@@ -93,9 +91,6 @@ const ProductsList = () => {
             </View>
           ))}
         </ScrollView>
-      </View>
-      <View style={{ marginBottom: 30 }}>
-        <PrevAndNextButton navigateNext={screenNames.PaymentMethod} first />
       </View>
     </View>
   );

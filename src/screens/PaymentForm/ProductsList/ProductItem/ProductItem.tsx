@@ -112,7 +112,7 @@ const ProductItem = ({ route }: Props) => {
             })}
           </View>
           <View>
-            <DateField />
+            <DateField title={data?.trip.title} price={data?.trip.price} />
           </View>
         </BottomSheetScrollView>
       </BottomSheet>

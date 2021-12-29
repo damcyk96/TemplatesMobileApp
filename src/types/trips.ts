@@ -12,7 +12,7 @@ export type TripFormData = {
   title: string;
   price: number;
   dates: {
-    day: number;
+    date: string;
     people: number;
   }[];
 };
