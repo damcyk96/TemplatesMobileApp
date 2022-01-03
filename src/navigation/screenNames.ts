@@ -1,0 +1,16 @@
+export const screenNames = {
+  Map: 'Map',
+  Profile: 'Profile',
+  Posts: 'Posts',
+  Settings: 'Settings',
+  PostPreview: 'PostPreview',
+  SignIn: 'SignIn',
+  CreatePost: 'CreatePost',
+  EditPost: 'EditPost',
+  PostsList: 'PostsList',
+  PaymentMethod: 'PaymentMethod',
+  Preview: 'Preview',
+  ProductsList: 'ProductsList',
+  ProductItem: 'ProductItem',
+  Summary: 'Summary',
+};

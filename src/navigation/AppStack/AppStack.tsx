@@ -2,9 +2,27 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import MainDrawer from '../MainDrawer';
-import { PostPreview, SignIn } from '../../screens';
+import { screenNames } from '../screenNames';
+import { CreatePost, EditPost, PostPreview, SignIn } from '../../screens';
+import {
+  PaymentMethod,
+  Preview,
+  ProductsList,
+  Summary,
+} from '../../screens/PaymentForm';
+import ProductItem from '../../screens/PaymentForm/ProductsList/ProductItem';
 
 const Stack = createNativeStackNavigator();
+const options = {
+  headerBackTitleVisible: false,
+  cardStyleInterpolator: ({ current: { progress } }) => {
+    return {
+      cardStyle: {
+        opacity: progress,
+      },
+    };
+  },
+};
 
 const AppStack = () => (
   <Stack.Navigator initialRouteName="MainDrawer">
@@ -13,8 +31,21 @@ const AppStack = () => (
       component={MainDrawer}
       options={{ headerShown: false }}
     />
-    <Stack.Screen name="PostPreview" component={PostPreview} />
-    <Stack.Screen name="SignIn" component={SignIn} />
+    {/* MAIN STACK */}
+    <Stack.Screen name={screenNames.PostPreview} component={PostPreview} />
+    <Stack.Screen name={screenNames.SignIn} component={SignIn} />
+    <Stack.Screen name={screenNames.CreatePost} component={CreatePost} />
+    <Stack.Screen name={screenNames.EditPost} component={EditPost} />
+    {/* STACK PAYMENTS */}
+    <Stack.Screen name={screenNames.PaymentMethod} component={PaymentMethod} />
+    <Stack.Screen name={screenNames.Preview} component={Preview} />
+    <Stack.Screen name={screenNames.ProductsList} component={ProductsList} />
+    <Stack.Screen
+      name={screenNames.ProductItem}
+      component={ProductItem}
+      options={() => options}
+    />
+    <Stack.Screen name={screenNames.Summary} component={Summary} />
   </Stack.Navigator>
 );
 

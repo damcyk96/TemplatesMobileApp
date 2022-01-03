@@ -6,18 +6,14 @@ const storeData = async (value: any) => {
       '@storage_Key',
       typeof value === 'string' ? value : JSON.stringify(value),
     );
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 
 const getData = async (key: string) => {
   try {
     const jsonValue = await AsyncStorage.getItem(key);
     return jsonValue === null ? null : JSON.parse(jsonValue);
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 
 export default { getData, storeData };
