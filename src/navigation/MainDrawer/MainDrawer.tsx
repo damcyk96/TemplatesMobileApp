@@ -44,7 +44,12 @@ const MainDrawer = () => {
     return (
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
-        <DrawerItem label="Logout" onPress={Logout} />
+        <DrawerItem
+          labelStyle={{ color: 'white' }}
+          label="Logout"
+          style={{ backgroundColor: 'red', borderRadius: 25 }}
+          onPress={Logout}
+        />
       </DrawerContentScrollView>
     );
   }
