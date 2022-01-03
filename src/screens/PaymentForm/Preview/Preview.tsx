@@ -9,13 +9,11 @@ const Preview = () => {
   const {
     stateData: { order },
   } = useContext<any>(TripOrderContext);
-  console.log(order.dates);
   let sum = 0;
   const totalPrice = order.dates.forEach((element) => {
     sum += element.people * order.price;
   });
 
-  console.log(sum);
   return (
     <View>
       <View

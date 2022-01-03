@@ -8,6 +8,7 @@ import { lightTheme } from './theme';
 import AppStack from './navigation/AppStack';
 import { LastPostWrapper } from './contexts/LastPostContext';
 import { TripOrderWrapper } from './contexts/TripsContext';
+import { LoginWrapper } from './contexts/LoginContext';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,13 +22,15 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TripOrderWrapper>
       <LastPostWrapper>
-        <ThemeProvider theme={lightTheme}>
-          <SafeAreaProvider>
-            <NavigationContainer>
-              <AppStack />
-            </NavigationContainer>
-          </SafeAreaProvider>
-        </ThemeProvider>
+        <LoginWrapper>
+          <ThemeProvider theme={lightTheme}>
+            <SafeAreaProvider>
+              <NavigationContainer>
+                <AppStack />
+              </NavigationContainer>
+            </SafeAreaProvider>
+          </ThemeProvider>
+        </LoginWrapper>
       </LastPostWrapper>
     </TripOrderWrapper>
   </QueryClientProvider>

@@ -1,11 +1,14 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage, {
+  useAsyncStorage,
+} from '@react-native-async-storage/async-storage';
 import { lightTheme } from '../../theme';
 import { screenNames } from '../../navigation/screenNames';
+import LoginContext from '../../contexts/LoginContext';
 
 export type FormData = {
   username: string;
@@ -18,6 +21,7 @@ const styles = StyleSheet.create({
 });
 
 const SignInForm = ({}: Props) => {
+  const { setUsername, username } = useContext(LoginContext);
   const { navigate } = useNavigation();
   const {
     control,
@@ -28,19 +32,13 @@ const SignInForm = ({}: Props) => {
       username: '',
     },
   });
-  const storeData = async (value) => {
-    try {
-      await AsyncStorage.setItem('userName', value);
-    } catch (e) {
-      // saving error
-    }
-  };
+
   const handleSubmitForm = useCallback(
     (formData: FormData) => {
-      storeData(formData.username);
-      navigate(screenNames.Posts);
+      setUsername(formData.username);
+      navigate(screenNames.PostsList);
     },
-    [navigate],
+    [setUsername],
   );
 
   return (

@@ -1,4 +1,10 @@
-import React, { useCallback, useMemo, useState, useEffect } from 'react';
+import React, {
+  useCallback,
+  useMemo,
+  useState,
+  useEffect,
+  useContext,
+} from 'react';
 import {
   FlatList,
   SafeAreaView,
@@ -6,7 +12,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import {
   ActivityIndicator,
   Card,
@@ -15,12 +21,12 @@ import {
   Paragraph,
   Text,
 } from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useGetPostsWithLimit } from '../../api/posts';
 import { screenNames } from '../../navigation/screenNames';
 import { lightTheme } from '../../theme';
 import { Post } from '../../types';
+import LoginContext from '../../contexts/LoginContext';
 
 type ListProps = {
   item: Post;
@@ -41,16 +47,17 @@ const styles = StyleSheet.create({
 });
 
 const Posts = () => {
-  const [userName, setuserName] = useState('');
-
-  useEffect(async () => {
-    const usernameValue = await AsyncStorage.getItem('userName');
-    setuserName(usernameValue);
-  }, []);
+  const { username } = useContext(LoginContext);
 
   const { navigate } = useNavigation();
-  const { data, hasNextPage, isLoading, isFetchingNextPage, fetchNextPage } =
-    useGetPostsWithLimit();
+  const {
+    data,
+    hasNextPage,
+    isLoading,
+    isFetchingNextPage,
+    fetchNextPage,
+    refetch,
+  } = useGetPostsWithLimit();
 
   const posts = useMemo(
     () => data?.pages.flatMap((response) => response.data),
@@ -63,6 +70,12 @@ const Posts = () => {
     }
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, [refetch]),
+  );
+
   if (isLoading) {
     return <ActivityIndicator size="large" />;
   }
@@ -70,7 +83,7 @@ const Posts = () => {
   return (
     <SafeAreaView>
       <View style={style.container}>
-        <Text style={{ fontSize: 45 }}>AsyncStorage: {userName}</Text>
+        <Text style={{ fontSize: 45 }}>AsyncStorage: {username}</Text>
         {!!data && (
           <FlatList
             data={posts}
